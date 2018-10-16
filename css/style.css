@@ -14,6 +14,15 @@
   src: url('../font/orbitron-light.otf') format("opentype");
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 html, body {
   font-family: 'Lato'; 
 }
@@ -371,3 +380,45 @@ a {
     background-color: #1a252f;
     border-color: #1a252f; 
   }
+
+.more-info {
+  cursor: pointer;
+  background-color: #202020;
+  color: #EEE;
+  border: none;
+}
+
+.more-info-disabled {
+  cursor: not-allowed;
+  background-color: #333;
+  color: #707070;
+  border-width: 1px;
+  border-color: #999;
+}
+
+.invisible {
+  display: none !important;
+  /* -webkit-animation-name: fadeIn;
+     -moz-animation-name: fadeIn;
+       -o-animation-name: fadeIn;
+          animation-name: fadeIn;
+  
+  -webkit-animation-duration: 0.4s;
+     -moz-animation-duration: 0.4s;
+       -o-animation-duration: 0.4s;
+          animation-duration: 0.4s;
+
+  -webkit-animation-fill-mode: both;
+     -moz-animation-fill-mode: both;
+       -o-animation-fill-mode: both;
+          animation-fill-mode: both; */
+}
+
+.lecture-info {
+  padding: 4px;
+  padding-bottom: 8px;
+  margin-top: 32px;
+  font-size: 20px;
+  background-color: #333;
+  color: #EEE;
+}

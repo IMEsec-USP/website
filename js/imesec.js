@@ -72,4 +72,8 @@
     });
   });
 
+  $(document).on('click', '.more-info', function(event) {
+    event.target.nextElementSibling.classList.toggle('invisible');
+  });
+
 })(jQuery); // End of use strict
