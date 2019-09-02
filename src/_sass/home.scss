@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  scroll-behavior: smooth;
+  background-color: black;
+  color: white;
+  font-family: "Orbitron", sans-serif;
+}
+
+.header {
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+
+  a {
+    margin: 2em;
+    font-size: 1.5em;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+
+.splash {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.splash--logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.splash--logo-text {
+  width: 65vw;
+  display: flex;
+  justify-content: space-around;
+}
+
+.splash--logo-lock {
+  margin-left: 2vw;
+  width: 14.5vw;
+}
+
+.splash--logo-letter {
+  margin: 0.5vw;
+  font-weight: bold;
+  font-size: 14vw;
+}
+
+.splash--subtitle {
+  text-align: center;
+  margin-top: 2em;
+  font-size: 2em;
+  font-weight: 500;
+}
+
+@media (max-width: 800px) {
+  .splash--subtitle {
+    font-size: 1em;
+  }
+}
