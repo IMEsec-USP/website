@@ -5,6 +5,10 @@
   scroll-behavior: smooth;
   background-color: black;
   color: white;
+  font-family: "Saira", sans-serif;
+}
+
+.heading {
   font-family: "Orbitron", sans-serif;
 }
 
@@ -12,10 +16,10 @@
   height: 10vh;
   display: flex;
   justify-content: space-around;
-  width: 100vw;
+  width: 100%;
 
   a {
-    margin: 2em;
+    margin-top: 2em;
     font-size: 1.5em;
     font-weight: 500;
     text-decoration: none;
@@ -23,7 +27,7 @@
 }
 
 .splash {
-  height: 90vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -60,8 +64,57 @@
   font-weight: 500;
 }
 
+.about {
+  margin-top: 10em;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about--title {
+  font-size: 2.5em;
+}
+
+.about--subtitle {
+  font-size: 2em;
+}
+.about--section {
+  margin-top: 4em;
+  max-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.about--subsection {
+  width: 40vw;
+  margin: 3em;
+}
+.about--subsection-description {
+  margin-top: 1em;
+  font-size: 1.5em;
+
+  p {
+    margin: 0.5em;
+  }
+}
+
+.about--subsection-image {
+  width: 20vw;
+}
+
 @media (max-width: 800px) {
   .splash--subtitle {
     font-size: 1em;
+  }
+
+  .about--subsection-description {
+    max-height: 50%;
+  }
+  .about--subsection {
+    width: 100vw;
+    height: 50vh;
   }
 }
