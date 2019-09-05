@@ -14,9 +14,10 @@ for (let i = 0; i < 5; i++) {
   }, 80);
 }
 
-let logo = "IMEsec";
+let logo = ["I", "M", "E", "s", "e", "c"];
 for (let i = 0; i < 5; i++)
   setTimeout(function() {
-    letter[i].innerHTML = logo.charAt(i);
+    letter[i].innerHTML = logo[i];
     clearInterval(scramble[i]);
+    letter[i].classList.add("error");
   }, 2000 + 250 * i);
