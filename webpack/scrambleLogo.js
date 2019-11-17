@@ -1,6 +1,5 @@
-let characters =
+const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-let charactersLength = characters.length;
 
 let letter = [];
 let scramble = [];
@@ -9,12 +8,12 @@ for (let i = 0; i < 5; i++) {
   letter[i] = document.getElementById("splash--logo-letter-" + i);
   scramble[i] = setInterval(function() {
     letter[i].innerHTML = characters.charAt(
-      Math.floor(Math.random() * charactersLength)
+      Math.floor(Math.random() * characters.length)
     );
   }, 80);
 }
 
-let logo = ["I", "M", "E", "s", "e", "c"];
+const logo = "IMEsec";
 for (let i = 0; i < 5; i++)
   setTimeout(function() {
     letter[i].innerHTML = logo[i];
