@@ -1,8 +1,8 @@
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-let letter = [];
-let scramble = [];
+const letter = [];
+const scramble = [];
 
 for (let i = 0; i < 5; i++) {
   letter[i] = document.getElementById("splash--logo-letter-" + i);
