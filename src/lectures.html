@@ -1,0 +1,58 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Saira&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <title>Palestras do IMEsec</title>
+  </head>
+  <body>
+    <div class="lectures">
+      <div class="lectures--header">
+        <a href="/">Voltar à página inicial</a>
+      </div>
+      <h1 class="heading lectures--title">Palestras</h1>
+      <p class="lectures--description">
+        Veja aqui as apresentações/materiais usados em nossas palestras:
+      </p>
+      <div class="lectures--items">
+        {% include lectures-item.html title="Seminário de Assembly" 
+        filename="seminario-assembly" description="" %} 
+
+        {% include lectures-item.html title="Stack Smashing" 
+        filename="stack-smashing" description="" %} 
+          
+        {% include lectures-item.html title="Phishing" 
+        filename="phishing" description="" %} 
+          
+        {% include lectures-item.html title="Workshop de Blockchain" 
+        filename="blockchain" description="" %} 
+          
+        {% include lectures-item.html title="Esteganografia 2" 
+        filename="esteganografia-2" description="" %} 
+          
+        
+        {% include lectures-item.html title="Wi-Fi - Parte 2" 
+        filename="wifi-parte-2" description="Descubra o que fazer quando se tem acesso ao roteador." %} 
+        
+        {% include lectures-item.html title="Wi-Fi - Parte 1"
+        filename="wifi-parte-1" description="" %} 
+        
+        {% include lectures-item.html title="Web e XSS" 
+        filename="web-e-XSS" description="" %} 
+        
+        {% include lectures-item.html title="Esteganografia" 
+        filename="esteganografia" description="Vários exemplos da técnica de esconder em plena vista." %}
+      </div>
+    </div>
+  </body>
+</html>
