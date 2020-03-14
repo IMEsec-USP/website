@@ -1,22 +1,9 @@
-const characters =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+import lottie from "lottie-web";
 
-const letter = [];
-const scramble = [];
-
-for (let i = 0; i < 5; i++) {
-  letter[i] = document.getElementById("splash--logo-letter-" + i);
-  scramble[i] = setInterval(function() {
-    letter[i].innerHTML = characters.charAt(
-      Math.floor(Math.random() * characters.length)
-    );
-  }, 80);
-}
-
-const logo = "IMEsec";
-for (let i = 0; i < 5; i++)
-  setTimeout(function() {
-    letter[i].innerHTML = logo[i];
-    clearInterval(scramble[i]);
-    letter[i].classList.add("error");
-  }, 2000 + 250 * i);
+lottie.loadAnimation({
+  container: document.getElementById("splash--logo"),
+  renderer: "svg",
+  loop: false,
+  autoplay: true,
+  path: "/assets/json/IMEsec-logo-animation.json"
+});
