@@ -1,2 +1,0 @@
-import "./animateSplash";
-import "./scrambleLogo";
