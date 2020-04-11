@@ -18,7 +18,7 @@
   justify-content: space-around;
   width: 100%;
   align-items: center;
-  a {
+  .header--link {
     font-size: 1.5em;
     text-decoration: none;
   }
@@ -271,18 +271,30 @@
     right: 0;
     margin: 3.5em;
   }
-  
+
   .hamburger-menu--bar1 {
     -webkit-transform: translateY(0.75rem) rotate(-45deg);
     transform: translateY(0.75rem) rotate(-45deg);
   }
-  
+
   .hamburger-menu--bar2 {
     opacity: 0;
   }
-  
+
   .hamburger-menu--bar3 {
     -webkit-transform: translateY(-0.75rem) rotate(45deg);
     transform: translateY(-0.75rem) rotate(45deg);
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .splash--subtitle {
+    font-size: 3.5em;
+  }
+
+  .header {
+    .header--link {
+      font-size: 3em;
+    }
   }
 }
