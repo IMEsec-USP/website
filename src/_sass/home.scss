@@ -238,7 +238,7 @@
   height: 100vh;
 }
 
-.hamburger-menu--active.header {
+.header--hamburger-menu-active.header {
   position: absolute;
   top: 0;
   display: flex;
@@ -247,7 +247,7 @@
   height: 80vh;
   padding-bottom: 20vh;
 
-  a {
+  .header--link {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -270,7 +270,7 @@
   }
 }
 
-.hamburger-menu--active.header>div {
+.header--hamburger-menu-active.header>.header--menu {
   order: -1;
   display: flex;
   flex-direction: column;
