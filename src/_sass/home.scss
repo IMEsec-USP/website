@@ -132,7 +132,8 @@
 }
 
 .about--subsection-image {
-  width: 30%;
+  width: 20em;
+  max-width: 30%;
 }
 
 .about--meetings {
@@ -140,7 +141,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  padding: 5em 0;
   width: 100%;
 
   h2 {
