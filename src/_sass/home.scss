@@ -242,9 +242,10 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   height: 80vh;
-  padding-bottom: 20vh;
+  padding: 20vh 0;
 
   .header--link {
     display: flex;
@@ -254,6 +255,13 @@
     flex: 1 1 0;
   }
 
+  .hamburger-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 3.5em;
+  }
+  
   .hamburger-menu--bar1 {
     -webkit-transform: translateY(0.75rem) rotate(-45deg);
     transform: translateY(0.75rem) rotate(-45deg);
@@ -267,12 +275,4 @@
     -webkit-transform: translateY(-0.75rem) rotate(45deg);
     transform: translateY(-0.75rem) rotate(45deg);
   }
-}
-
-.header--hamburger-menu-active.header>.header--menu {
-  order: -1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
