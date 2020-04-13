@@ -1,0 +1,311 @@
+version: "3.4"
+services:
+  lh-web:
+    image: razgrizone/lightning-hacks-website
+    environment:
+      VIRTUAL_HOST: lh.imesec.ime.usp.br
+      LETSENCRYPT_HOST: lh.imesec.ime.usp.br
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        delay: "0"
+
+  lh-api:
+    image: razgrizone/lightning-hacks-api
+    environment:
+      VIRTUAL_HOST: api.lh.imesec.ime.usp.br
+      LETSENCRYPT_HOST: api.lh.imesec.ime.usp.br
+      VIRTUAL_PORT: 5000
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        delay: "0"
+    volumes:
+      - /services/tokens/lh-api.pickle:/data/token.pickle
+
+  lh-timer:
+    image: razgrizone/lightning-hacks-timer
+    environment:
+      VIRTUAL_HOST: timer.imesec.ime.usp.br
+      LETSENCRYPT_HOST: timer.imesec.ime.usp.br
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        delay: "0"
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8999:8080"
+    environment:
+      VIRTUAL_HOST: swarm.imesec.ime.usp.br
+      LETSENCRYPT_HOST: swarm.imesec.ime.usp.br
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  nginx-website:
+    image: richarvey/nginx-php-fpm:latest
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        delay: "0"
+    environment:
+      GIT_EMAIL: imesec@ime.usp.br
+      GIT_NAME: imesec
+      GIT_REPO: https://github.com/IMEsec-USP/website.git
+      VIRTUAL_HOST: imesec.ime.usp.br
+      LETSENCRYPT_HOST: imesec.ime.usp.br
+      WEBROOT: /var/www/html/website/
+
+  whoami:
+    image: jwilder/whoami
+    environment:
+      VIRTUAL_HOST: batata.imesec.ime.usp.br
+      LETSENCRYPT_HOST: batata.imesec.ime.usp.br
+      
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+    environment:
+      DHPARAM_GENERATION: "false"
+      DEBUG: "true"
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+      #- "com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen"
+    volumes:
+      - /services/docker-compose/nginx-proxy/data/conf.d/:/etc/nginx/conf.d/
+      - /services/docker-compose/nginx-proxy/data/conf.mount/:/etc/nginx/conf.mount/
+      - /services/docker-compose/nginx-proxy/data/certs:/etc/nginx/certs
+      - /services/docker-compose/nginx-proxy/data/vhosts:/etc/nginx/vhost.d
+      - /services/docker-compose/nginx-proxy/data/html:/usr/share/nginx/html
+      - /services/docker-compose/nginx-proxy/data/nginx.conf:/etc/nginx/nginx.conf
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  letsencrypt-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - /services/docker-compose/nginx-proxy/data/conf.d/:/etc/nginx/conf.d/
+      - /services/docker-compose/nginx-proxy/data/conf.mount/:/etc/nginx/conf.mount/
+      - /services/docker-compose/nginx-proxy/data/vhosts:/etc/nginx/vhost.d
+      - /services/docker-compose/nginx-proxy/data/html:/usr/share/nginx/html
+      - /services/docker-compose/nginx-proxy/data/certs:/etc/nginx/certs
+      - /services/docker-compose/nginx-proxy/data/letsencrypt_user_data:/app/letsencrypt_user_data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    environment:
+      DEFAULT_EMAIL: "imesec@ime.usp.br"
+      # ACME_CA_URI: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.entrypoint == true
+
+  bind:
+    image: sameersbn/bind:latest
+    environment:
+      WEBMIN_ENABLED: "false"
+    volumes:
+      - /services/docker-compose/bind/data/:/data
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.entrypoint == true
+
+  bookstack:
+    image: solidnerd/bookstack:0.26.3
+    # build: /services/bookstack
+    depends_on:
+    - bookstack_db
+    env_file:
+      /services/bookstack/data/bookstack.env
+    volumes:
+    - /services/bookstack/data/uploads:/var/www/bookstack/public/uploads
+    - /services/bookstack/data/storage:/var/www/bookstack/public/storage
+    - /services/bookstack/favicon.ico:/var/www/bookstack/public/favicon.ico
+    environment:
+      VIRTUAL_HOST: wiki.imesec.ime.usp.br
+      LETSENCRYPT_HOST: wiki.imesec.ime.usp.br
+
+  bookstack_db:
+    image: mysql:5.7.21
+    volumes:
+    - /services/bookstack/data/mysql:/var/lib/mysql
+    env_file:
+      /services/bookstack/data/bookstack_db.env
+    deploy:
+      replicas: 1
+
+  # ctfd_beta:
+  #   image: ctfd/ctfd
+  #   environment:
+  #     VIRTUAL_HOST: betactf.imesec.ime.usp.br
+  #     LETSENCRYPT_HOST: betactf.imesec.ime.usp.br
+
+  minemap-proxy:
+    image: r0zbot/nginx-proxy-pass
+    ports:
+      - 9000:80
+      # - target: 80
+      #   published: 9000
+      #   mode: host
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.entrypoint == true
+    environment:
+      VIRTUAL_HOST: minemap.imesec.ime.usp.br
+      LETSENCRYPT_HOST: minemap.imesec.ime.usp.br
+      TARGET_SERVER: "gaia.zt.imesec.ime.usp.br:8123"
+      HTTP_PROTOCOL: http
+
+  ada:
+    image: razgrizone/ada
+    env_file:
+      /services/ada/ada.env
+    environment:
+      VIRTUAL_HOST: ada.imesec.ime.usp.br
+      LETSENCRYPT_HOST: ada.imesec.ime.usp.br
+
+
+
+  ###### BEGIN IMEX 2020
+
+  imex_secret_cipher:
+    image: imesecctf/secret-cipher
+    ports:
+      - 3901:3901
+
+  imex_floating_point:
+    image: imesecctf/floating-point:fixed
+    ports:
+      - 1209:1209
+
+  imex_biscoito:
+    image: romeoz/docker-apache-php
+    volumes:
+      - /services/imex_2019/biscoito/:/var/www/app/
+    environment:
+      VIRTUAL_HOST: biscoito.imesec.ime.usp.br
+      LETSENCRYPT_HOST: biscoito.imesec.ime.usp.br
+
+  imex_formless_post:
+    image: imesecctf/formless_post
+    environment:
+      VIRTUAL_HOST: segredo.imesec.ime.usp.br
+      LETSENCRYPT_HOST: segredo.imesec.ime.usp.br
+
+  imex_double_compression:
+    image: imesecctf/double-compression:latest
+    environment:
+      VIRTUAL_HOST: paca.imesec.ime.usp.br
+      LETSENCRYPT_HOST: paca.imesec.ime.usp.br
+
+  imex_voltando_no_tempo:
+    image: imesecctf/voltando_no_tempo
+    environment:
+      VIRTUAL_HOST: backtothefuture.imesec.ime.usp.br
+      LETSENCRYPT_HOST: backtothefuture.imesec.ime.usp.br
+
+  imex_pseudo_sorting:
+    image: imesecctf/pseudo-sorting
+    environment:
+      FLAG: CTF{o_brelf_provavalmente_ta_dormindo}
+    ports:
+      - 7777:7777
+
+  imex_mastermind:
+    image: imesecctf/mastermind
+    environment:
+      EASY_FLAG: CTF{o_novo_hearthstone}
+      HARD_FLAG: CTF{a_saideira}
+      VIRTUAL_HOST: mastermind.imesec.ime.usp.br
+      LETSENCRYPT_HOST: mastermind.imesec.ime.usp.br
+
+  ctfd_bixes:
+    image: ctfd/ctfd
+    env_file:
+      /services/imex_2020/ctfd_bixes/ctfd.env
+    environment:
+      VIRTUAL_HOST: imex.imesec.ime.usp.br
+      LETSENCRYPT_HOST: imex.imesec.ime.usp.br
+    volumes:
+      - /services/imex_2020/ctfd_bixes/data/CTFd/logs:/var/log/CTFd
+      - /services/imex_2020/ctfd_bixes/data/CTFd/uploads:/var/uploads
+    depends_on:
+      - ctfd_bixes_db
+      - ctfd_bixes_cache
+
+  ctfd_bixes_db:
+    image: mariadb:10.4
+    deploy:
+      replicas: 1
+    env_file:
+      /services/imex_2020/ctfd_bixes/ctfd_db.env
+    volumes:
+      - /services/imex_2020/ctfd_bixes/data/mysql:/var/lib/mysql
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  ctfd_bixes_cache:
+    image: redis:4
+    deploy:
+      replicas: 1
+    volumes:
+      - /services/imex_2020/ctfd_bixes/data/redis:/data
+    
+  ctfd_geral:
+    image: ctfd/ctfd
+    env_file:
+      /services/imex_2020/ctfd_geral/ctfd.env
+    environment:
+      VIRTUAL_HOST: ctf.imesec.ime.usp.br
+      LETSENCRYPT_HOST: ctf.imesec.ime.usp.br
+    volumes:
+      - /services/imex_2020/ctfd_geral/data/CTFd/logs:/var/log/CTFd
+      - /services/imex_2020/ctfd_geral/data/CTFd/uploads:/var/uploads
+    depends_on:
+      - ctfd_geral_db
+      - ctfd_geral_cache
+
+  ctfd_geral_db:
+    image: mariadb:10.4
+    deploy:
+      replicas: 1
+    env_file:
+      /services/imex_2020/ctfd_geral/ctfd_db.env
+    volumes:
+      - /services/imex_2020/ctfd_geral/data/mysql:/var/lib/mysql
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  ctfd_geral_cache:
+    image: redis:4
+    deploy:
+      replicas: 1
+    volumes:
+      - /services/imex_2020/ctfd_geral/data/redis:/data
+  ###### END IMEX 2020
+
+# networks:
+#   default:
+#     driver: overlay
