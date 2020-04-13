@@ -68,12 +68,20 @@
 }
 
 .lectures-item--image {
-  max-width: 80vw;
   width: 25em;
+  max-width: 80vw;
   margin: 0.5em;
 }
 
 .lectures-item--description {
     width: 80%;
     text-align: center;
+}
+
+
+
+@media only screen and (max-width: 500px) {
+  .lectures-item {
+    padding: 1em;
+  }
 }
