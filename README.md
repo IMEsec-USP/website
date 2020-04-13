@@ -22,4 +22,10 @@ in another.
 
 ### To build for production
 
-> TODO
+The nginx deploy config is on `deploy/nginx.conf`.
+You can run the production deployment like so:
+
+```
+docker build . -t imesec/website
+docker run -p 5000:5000 imesec/website
+```
