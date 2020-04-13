@@ -20,4 +20,6 @@ COPY deploy/nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /app
 COPY --from=builder /build/_site ./
+COPY /assinaturas ./assinaturas
+
 EXPOSE 5000
