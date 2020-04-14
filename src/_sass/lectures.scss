@@ -37,7 +37,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 90vw;
+  max-width: 90%;
   margin: 1em;
   padding: 2em;
   text-decoration: none;
@@ -65,23 +65,21 @@
   flex-grow: 1;
   text-align: center;
   text-decoration: none;
+  max-width: 80%;
+}
+
+.lectures-item--image-container {
+  width: 80%;
+  max-width: 25em;
+  margin: 0.5em;
 }
 
 .lectures-item--image {
-  width: 25em;
-  max-width: 80vw;
-  margin: 0.5em;
+  width: 100%;
+  height: auto;
 }
 
 .lectures-item--description {
     width: 80%;
     text-align: center;
-}
-
-
-
-@media only screen and (max-width: 500px) {
-  .lectures-item {
-    padding: 1em;
-  }
 }
